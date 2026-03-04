@@ -3,7 +3,7 @@ import "./content_2.css";
 function content_2() {
   return (
     <div className="content-2">
-      <h3>Course Recommendation</h3>
+      <h3 className="title">Course Recommendation</h3>
       <div className="cards">
         <div className="card">
           {/* <img src="" alt="" /> */}
