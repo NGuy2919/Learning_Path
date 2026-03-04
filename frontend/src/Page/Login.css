@@ -1,0 +1,71 @@
+.Login{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login{
+    width: 400px;
+    background-color: rgb(255, 255, 255);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login img{
+    width: 80px;
+    height: 80px;
+}
+.login h2{
+    text-align: center;
+}
+.form-login{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.form-login input{
+    padding: 5px 10px;
+    border:1px solid rgb(145, 145, 145);
+    border-radius: 10px;
+}
+.form-login input:focus{
+    outline: 1px solid rgb(136, 136, 136);
+}
+.forget-pass{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+.btn-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn-login button:first-child{
+    width: 150px;
+    padding: 7px 0;
+    border: none;
+    background-color: #7678ED;
+    border-radius:10px ;
+    color: white;
+    transition: all 0.2s ease;
+}
+.btn-login button:first-child:hover{
+    background-color: #8688ed;
+    outline: 1px solid white;
+    outline-offset: -2px;
+}
+.btn-login p{
+    padding: 5px 0;
+}
