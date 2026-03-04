@@ -12,6 +12,7 @@
 ### 1. Install dependencies
 
 ```bash
+cd backend
 npm install
 ```
 
