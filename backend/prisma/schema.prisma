@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(uuid())
-  username        String
-  email           String   @unique
-  password        String
-  role            Role
-  interests       String[]
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  password  String
+  role      Role
+  interests String[]
 
-  createdAt       DateTime @default(now())
+  createdAt DateTime @default(now())
 
   enrollments     Enrollment[]
   feedbacks       Feedback[]
   certificates    Certificate[]
   recommendations RecommendationLog[]
+
+  interactions UserInteraction[]
 }
 
 enum Role {
@@ -29,27 +31,30 @@ enum Role {
 }
 
 model Course {
-  id                String @id @default(uuid())
+  id String @id @default(uuid())
 
   courseName        String
   courseDescription String
 
-  targetGroup       String?
-  organization      String?
-  price             Float?
+  targetGroup  String?
+  organization String?
+  price        Float?
 
-  category          Category
-  level             Level
+  category Category
+  level    Level
 
-  thumbnailUrl      String?
+  thumbnailUrl String?
 
-  createdAt         DateTime @default(now())
+  embedding CourseEmbedding?
 
-  modules           Module[]
-  keywords          CourseKeyword[]
-  enrollments       Enrollment[]
-  feedbacks         Feedback[]
-  certificates      Certificate[]
+  createdAt DateTime @default(now())
+
+  modules      Module[]
+  keywords     CourseKeyword[]
+  enrollments  Enrollment[]
+  feedbacks    Feedback[]
+  certificates Certificate[]
+  interactions UserInteraction[]
 }
 
 // ----------------- เปลี่ยนแปลงภายหลัง เดต้ายังไม่stable ----------------
@@ -67,76 +72,77 @@ enum Level {
 }
 
 model Instructor {
-  id                String @id @default(uuid())
-  name              String
+  id   String @id @default(uuid())
+  name String
 
-  lessons           Lesson[]
+  lessons Lesson[]
 }
 
 // ------ เก็บส่วนสำคัญของเนื้อหาภายในคอร์สไว้สำหรับ search, recommendations ------
 model CourseKeyword {
-  id                String @id @default(uuid())
-  courseId          String
-  keyword           String
+  id       String @id @default(uuid())
+  courseId String
+  keyword  String
 
-  course            Course @relation(fields: [courseId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 
-  @@index([courseId])
   @@unique([courseId, keyword])
+  @@index([courseId])
 }
 
 model Module {
-  id                String @id @default(uuid())
-  courseId          String
-  moduleName        String
-  orderIndex        Int
+  id         String @id @default(uuid())
+  courseId   String
+  moduleName String
+  orderIndex Int
 
-  course            Course  @relation(fields: [courseId], references: [id])
-  lessons           Lesson[]
+  course  Course   @relation(fields: [courseId], references: [id])
+  lessons Lesson[]
 
   @@index([courseId])
 }
 
 model Lesson {
-  id                String @id @default(uuid())
-  moduleId          String
-  
-  topicNo           String?
-  topicName         String
-  videoUrl          String?
-  durationMin       Int
-  module            Module @relation(fields: [moduleId], references: [id])
-  
-  instructorId      String?
-  instructor        Instructor? @relation(fields: [instructorId], references: [id])
+  id       String @id @default(uuid())
+  moduleId String
 
-  performances      LessonPerformance[]
+  topicNo     String?
+  topicName   String
+  videoUrl    String?
+  durationMin Int
+  module      Module  @relation(fields: [moduleId], references: [id])
+
+  instructorId String?
+  instructor   Instructor? @relation(fields: [instructorId], references: [id])
+
+  performances LessonPerformance[]
+  tests        Test[]
 
   @@index([moduleId])
 }
 
 model Enrollment {
-  id                String @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId            String
-  courseId          String
+  userId   String
+  courseId String
 
-  status            EnrollmentStatus
-  progress          Float
+  status   EnrollmentStatus
+  progress Float
 
-  finalScore        Float?
+  finalScore Float?
 
-  enrolledDate      DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  enrolledDate DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  user              User   @relation(fields: [userId], references: [id])
-  course            Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 
-  performances      LessonPerformance[]
+  performances LessonPerformance[]
 
+  @@unique([userId, courseId])
   @@index([userId])
   @@index([courseId])
-  @@unique([userId, courseId])
 }
 
 enum EnrollmentStatus {
@@ -146,20 +152,20 @@ enum EnrollmentStatus {
 }
 
 model LessonPerformance {
-  id                String @id @default(uuid())
-  enrollmentId      String
-  lessonId          String
-  quizScore         Float?
-  timeSpentMin      Float?
-  lessonStatus      LessonStatus
+  id           String       @id @default(uuid())
+  enrollmentId String
+  lessonId     String
+  quizScore    Float?
+  timeSpentMin Float?
+  lessonStatus LessonStatus
 
-  updatedAt         DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
-  enrollment        Enrollment @relation(fields: [enrollmentId], references: [id])
-  lesson            Lesson     @relation(fields: [lessonId], references: [id])
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
+  lesson     Lesson     @relation(fields: [lessonId], references: [id])
 
-  @@index([lessonId])
   @@unique([enrollmentId, lessonId])
+  @@index([lessonId])
 }
 
 enum LessonStatus {
@@ -169,70 +175,70 @@ enum LessonStatus {
 }
 
 model Feedback {
-  id                String @id @default(uuid())
-  userId            String
-  courseId          String
-  
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+
   // ไม่ได้ fixed rating 1-5
-  rating            Int      
-  comment           String?
+  rating  Int
+  comment String?
 
-  createdAt         DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  user              User   @relation(fields: [userId], references: [id])
-  course            Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 
-  @@index([courseId])
   @@unique([userId, courseId])
+  @@index([courseId])
 }
 
 // ------ Test lesson ------ 
 model Test {
-  id String @id @default(uuid())
-  lessonId          String
+  id       String @id @default(uuid())
+  lessonId String
 
-  question          String
+  question String
 
-  optionA           String
-  optionB           String
-  optionC           String
-  optionD           String
+  optionA String
+  optionB String
+  optionC String
+  optionD String
 
-  correctAnswer     String
-  score             Int
+  correctAnswer String
+  score         Int
 
-  lesson            Lesson @relation(fields: [lessonId], references: [id])
+  lesson Lesson @relation(fields: [lessonId], references: [id])
 
   @@index([lessonId])
 }
 
 model RecommendationLog {
-  id                String @id @default(uuid())
-  userId            String
-  algorithm         String
-  generatedAt       DateTime @default(now())
+  id                 String   @id @default(uuid())
+  userId             String
+  algorithm          String
+  generatedAt        DateTime @default(now())
   recommendedCourses Json
 
-  user              User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Certificate {
-  id                String @id @default(uuid())
-  certificateId     String @unique
-  userId            String
-  courseId          String
-  issueDate         DateTime
-  certificateUrl    String
+  id             String   @id @default(uuid())
+  certificateId  String   @unique
+  userId         String
+  courseId       String
+  issueDate      DateTime
+  certificateUrl String
 
-  user              User   @relation(fields: [userId], references: [id])
-  course            Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 }
 
 model CourseEmbedding {
-  id        String @id @default(uuid())
-  courseId  String @unique
+  id        String  @id @default(uuid())
+  courseId  String  @unique
   embedding Float[]
 
   course Course @relation(fields: [courseId], references: [id])
@@ -241,10 +247,10 @@ model CourseEmbedding {
 }
 
 model UserInteraction {
-  id       String @id @default(uuid())
-  userId   String
-  courseId String
-  action   String
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  action    String
   createdAt DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id])
