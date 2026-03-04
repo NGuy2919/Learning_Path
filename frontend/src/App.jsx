@@ -18,3 +18,17 @@ function App() {
 }
 
 export default App;
+
+// import { useEffect } from "react";
+// import { getHealth } from "./api"
+
+// function App() {
+
+//   useEffect(()=>{
+//     getHealth().then(console.log)
+//   },[])
+
+//   return <h1>React Frontend</h1>
+// }
+
+// export default App
