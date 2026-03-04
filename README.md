@@ -9,20 +9,28 @@
 
 ## Setup
 
-1 Install dependencies
+### 1. Install dependencies
 
+```bash
 npm install
+```
 
-2 Setup environment variables
+### 2. Setup environment variables
 
-create .env 
+Create `.env`
 
+```env
 DATABASE_URL="your_database_url"
+```
 
-3 Generate Prisma client
+### 3. Generate Prisma client
 
+```bash
 npx prisma generate
+```
 
-4 Sync database
+### 4. Sync database
 
+```bash
 npx prisma db push
+```
