@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  username    String?
+  role        String       @default("student")
+  createdAt   DateTime     @default(now())
+  enrollments Enrollment[]
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  category    String?
+  level       String?
+  tags        String[]
+  createdAt   DateTime     @default(now())
+  enrollments Enrollment[]
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id       String  @id @default(uuid())
+  title    String
+  videoUrl String?
+  order    Int
+  courseId String
+  course   Course  @relation(fields: [courseId], references: [id])
+  quizzes  Quiz[]
+}
+
+model Enrollment {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  progress Int    @default(0)
+  course   Course @relation(fields: [courseId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+}
+
+model Quiz {
+  id       String @id @default(uuid())
+  lessonId String
+  question String
+  options  Json
+  answer   String
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+}
+
+model QuizAttempt {
+  id        String   @id @default(uuid())
+  userId    String
+  quizId    String
+  score     Int
+  createdAt DateTime @default(now())
+}
