@@ -16,38 +16,6 @@
     gap: 30px;
     align-items: center;
 }
-.account-btn{
-    display: flex;
-    text-decoration: none;
-    align-items: center;
-    border: none;
-    width: 100px;
-    height: 30px;
-    border-radius: 50px;
-    gap: 5px;
-    cursor: pointer;
-    position:relative;
-    overflow: hidden; 
-    z-index: 1;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
-}
-.account-btn::after{
-    height: 30px;
-    width: 30px;
-    content: "";
-    background-color: #7678ED;
-    display: block;
-    position: absolute;
-    border-radius: 50px;
-    z-index: -1;
-    transition: all 0.3s ease;
-}
-.account-btn:hover::after{
-    width: 100%;
-}
-.account-btn:hover{
-    color: white;
-}
 .logo{
     display: flex;
     align-items: center;
@@ -56,6 +24,10 @@
     padding: 0 10px;
     border-radius: 50px;
     cursor: pointer;
+    text-decoration: none;
+}
+.logo-text{
+  text-decoration: none;
 }
 .menu-a{
     cursor: pointer;
@@ -121,4 +93,54 @@
   height: 1.3em;
   width: 1.3em;
   fill: #b4b4b4;
+}
+.account-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 100px;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 50px;
+    background-color: #7678ED;
+    color: white;
+    border: none;
+    overflow: hidden;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.account-btn:hover{
+    box-shadow: 0 4px 12px rgba(118, 120, 237, 0.3);
+    color: white;
+    transform: translateY(-2px);
+}
+.btn-lr{
+  display: flex;
+  gap: 5px;
+}
+.account-btn2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 100px;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 50px;
+    background-color: white;
+    color: #7678ED;
+    border: none;
+    overflow: hidden;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.account-btn2:hover{
+    box-shadow: 0 4px 12px rgba(118, 120, 237, 0.3);
+    color: #7678ED;
+    transform: translateY(-2px);
 }

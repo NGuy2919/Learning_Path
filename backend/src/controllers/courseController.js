@@ -1,17 +1,29 @@
 import prisma from "../lib/prisma.js"
 
-export const getCourses = async (req, res) => {
+export const getAllCourses = async (req, res) => {
   try {
-
     const courses = await prisma.course.findMany({
       include: {
-        lessons: true
+        modules: true,
+        keywords: true,
+        embedding: true
+      },
+      orderBy: {
+        createdAt: "desc"
       }
-    })
+    });
 
-    res.json(courses)
+    res.json({
+      success: true,
+      count: courses.length,
+      data: courses
+    });
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching courses"
+    });
   }
-}
+};

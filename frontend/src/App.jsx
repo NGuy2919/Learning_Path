@@ -5,7 +5,7 @@ import Home from "./Page/Home";
 import AboutUs from "./Page/AboutUs";
 import Login from "./Page/Login";
 import Profile from "./Page/Profile";
-// add other pages as needed
+import Register from "./Page/Register";
 
 function App() {
 
@@ -13,28 +13,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/course" element={<Home />} /> {/* or a dedicated Course page */}
+        <Route path="/course" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-        {/* add additional <Route> entries for other pages */}
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
-// import { useEffect } from "react";
-// import { getHealth } from "./api"
-
-// function App() {
-
-//   useEffect(()=>{
-//     getHealth().then(console.log)
-//   },[])
-
-//   return <h1>React Frontend</h1>
-// }
-
-// export default App
