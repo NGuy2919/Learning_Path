@@ -4,8 +4,16 @@ import jwt from "jsonwebtoken"
 
 export const register = async (req, res) => {
   try {
-
-    const { username, email, password, interests } = req.body
+    const {
+      username,
+      email,
+      password,
+      interests,
+      fname,
+      lname,
+      birthDate,
+      educationLevel
+    } = req.body
 
     // check email ซ้ำ
     const existingUser = await prisma.user.findUnique({
@@ -28,14 +36,20 @@ export const register = async (req, res) => {
         email,
         password: hashedPassword,
         role: "student",
-        interests
+        interests: interests || [],
+        fname,
+        lname,
+        birthDate: birthDate ? new Date(birthDate) : undefined,
+        educationLevel
       }
     })
+
+    const { password: _, ...userData } = user
 
     res.json({
       success: true,
       message: "Register success",
-      user
+      user: userData
     })
 
   } catch (error) {
@@ -79,13 +93,15 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
     )
+
+    const { password: _, ...userData } = user
 
     res.json({
       success: true,
       token,
-      user
+      user: userData
     })
 
   } catch (error) {

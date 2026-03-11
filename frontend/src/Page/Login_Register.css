@@ -1,11 +1,11 @@
-.login{
+.login , .register{
     width: 100%;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.login-container{
+.login-container , .register-container{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,9 +25,10 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin: 10px 0;
 }
 .input-group input{
-    width: 300px;
+    width: 410px;
     padding: 8px 12px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -38,8 +39,9 @@
 }
 .btn-log{
     margin: 15px 0;
-    width: 100px;
+    width: 100%;
     padding: 10px 20px;
+    font-size: large;
     border: none;
     background-color: #7678ED;
     color: white;
@@ -72,4 +74,27 @@
 .btn-reg:hover{
     transform: translateY(-2px);
     box-shadow: 0 5px 8px rgba(118,120,237,0.4);
+}
+
+.input-name{
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+.input-name input{
+    width: 200px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.input-name select{
+    width: 200px;
+    padding: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.name{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }

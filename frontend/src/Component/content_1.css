@@ -37,12 +37,14 @@
     background-color: #7678ED;
     color: white;
     border:none ;
+    text-decoration: none;
     border-radius: 20px;
     transition: all 0.2s ease;
 }
 .learn{
     background-color: rgb(219, 237, 252);
     border: none;
+    text-decoration: none;
     border-radius: 20px;
     transition: all 0.2s ease;
 }

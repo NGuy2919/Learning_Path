@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum EducationLevel {
+  SECONDARY
+  HIGH_SCHOOL
+  DIPLOMA
+  BACHELOR
+  MASTER
+  DOCTORATE
+  OTHER
+}
+
 model User {
   id        String   @id @default(uuid())
   username  String
@@ -14,6 +24,10 @@ model User {
   password  String
   role      Role
   interests String[]
+  fname     String?
+  lname     String?
+  birthDate DateTime?
+  educationLevel EducationLevel?
 
   createdAt DateTime @default(now())
 

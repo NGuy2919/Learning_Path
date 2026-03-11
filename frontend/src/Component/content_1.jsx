@@ -1,5 +1,6 @@
 import "./content_1.css"
 import imgcon1 from "../assets/con1.png"
+import { Link } from "react-router-dom"
 
 function content_1() {
   return (
@@ -9,8 +10,8 @@ function content_1() {
                 <h3>Personalized Learning, Designed for Your Growth</h3>
                 <p>Unlock your full potential with our intelligent course recommendation system. Learn smarter, achieve faster, and start your journey to success today.</p>
                 <div className="button-con">
-                    <button className="con1-btn start">Get Started</button>
-                    <button className="con1-btn learn">Learn More</button>
+                    <Link to="/course" className="con1-btn start">Get Started</Link>
+                    <Link to="/about" className="con1-btn learn">Learn More</Link>
                 </div>
             </div>
             <div className="img-con1">

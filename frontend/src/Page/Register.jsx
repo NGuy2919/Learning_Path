@@ -1,10 +1,18 @@
 import { useState } from "react"
+import { Link ,useNavigate} from "react-router-dom"
+import logo from "../assets/logo.png"
+import "./Login_Register.css"
 
 function Register(){
 
   const [username,setUsername] = useState("")
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const [fname,setFname] = useState("")
+  const [lname,setLname] = useState("")
+  const [birthDate,setBirthDate] = useState("")
+  const [educationLevel,setEducationLevel] = useState("")
+  const navigate = useNavigate()
 
   const handleRegister = async (e)=>{
     e.preventDefault()
@@ -17,52 +25,122 @@ function Register(){
       body:JSON.stringify({
         username,
         email,
-        password
+        password,
+        fname,
+        lname,
+        birthDate: birthDate || null,
+        educationLevel: educationLevel || null
       })
     })
 
     const data = await res.json()
 
     if(data.success){
-      alert("Register success")
-    }else{
-      alert(data.message)
-    }
+        alert("Register success")
+
+        navigate("/login")
+
+      }else{
+        alert(data.message)
+      }
 
   }
 
   return(
-    <div>
+    <div className="register">
+      <div className="register-container">
+        <img src={logo} alt="Login" width={80} height={80}/>
+        <h2>Register</h2>
+        <form onSubmit={handleRegister}>
+          <div className="input-name">
+            <div className="name">
+            <label htmlFor="fname">First name</label>
+            <input
+              type="text"
+              placeholder="First name"
+              value={fname}
+              onChange={(e) => setFname(e.target.value)}
+              required
+            />
+            </div>
+            <div className="name">
+            <label htmlFor="lname">Last name</label>
+            <input
+              type="text"
+              placeholder="Last name"
+              value={lname}
+              onChange={(e) => setLname(e.target.value)}
+              required
+            />
+            </div>
+          </div>
 
-      <h2>Register</h2>
+          <div className="input-name">
+            <div className="name">
+            <label htmlFor="birthDate">Birth date</label>
+            <input
+              type="date"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+              required
+            />
+            </div>
+            <div className="name">
+            <label htmlFor="educationLevel">Education level</label>
+            <select
+              value={educationLevel}
+              onChange={(e) => setEducationLevel(e.target.value)}
+              required
+            >
+              <option value="">Please select education level</option>
+              <option value="SECONDARY">Lower Secondary School</option>
+              <option value="HIGH_SCHOOL">High School</option>
+              <option value="DIPLOMA">Diploma</option>
+              <option value="BACHELOR">Bachelor's Degree</option>
+              <option value="MASTER">Master's Degree</option>
+              <option value="DOCTORATE">Doctorate (PhD)</option>
+              <option value="OTHER">Other</option>
+            </select>
+            </div>
+          </div>
 
-      <form onSubmit={handleRegister}>
+          <div className="input-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e)=>setUsername(e.target.value)}
+            required
+          />
+          </div>
 
-        <input
-        type="text"
-        placeholder="username"
-        value={username}
-        onChange={(e)=>setUsername(e.target.value)}
-        />
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+            required
+          />
+          </div>
 
-        <input
-        type="email"
-        placeholder="email"
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        />
-
-        <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-        />
-
-        <button type="submit">Register</button>
-
-      </form>
-
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+            required
+          />
+          </div>
+          <button type="submit" className="btn-log">
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   )
 }

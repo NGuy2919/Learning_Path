@@ -150,11 +150,11 @@
     background-color: #7678ED;
     color: white;
     border-radius: 50px;
+    text-decoration: none;
     padding: 6px 0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: all 0.2s ease;
 }
-
 .btn-more-card:hover{
     box-shadow: 0 12px 25px rgba(0,0,0,0.2);
     transform: translateY(-2px);

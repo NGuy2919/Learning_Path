@@ -7,7 +7,11 @@ function AboutUs() {
     <div className="about">
       <Navbar />
       <div className="content-about">
-        <h3 className="title-about">About Us</h3>
+        <div className="title">
+          <h3 className="title-about">
+            About Us
+          </h3>
+        </div>
         <div className="members">
           <div className="member">
             <div className="image-member poo"></div>

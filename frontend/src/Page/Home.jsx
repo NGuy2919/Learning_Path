@@ -3,19 +3,37 @@ import Footer from "../Component/Footer.jsx"
 import Content_1 from "../Component/content_1.jsx";
 import Content_2 from "../Component/content_2.jsx";
 import Rating from "../Component/rating.jsx";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Home() {
   const [courses, setCourses] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-  fetch("http://localhost:3000/api/courses")
-    .then((res) => res.json())
-    .then((data) => {
-      setCourses(data.data); // data จาก backend
-    })
-    .catch((err) => console.error(err));
+    fetch("http://localhost:3000/api/courses")
+      .then((res) => res.json())
+      .then((data) => {
+        setCourses(data.data); // data จาก backend
+      })
+      .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) return
+
+    fetch("http://localhost:3000/api/user/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setUser(data.user)
+      })
+      .catch((err) => console.error(err))
+  }, [])
   
   return (
     <div>
@@ -26,7 +44,7 @@ function Home() {
           
             <div className="cards">
               {courses.slice(0, 3).map((course) => (
-                <div className="card" key={course.id}>
+                <Link to={`/course/${course.id}`} className="card" key={course.id}>
                   <div
                     className="image-card"
                     style={{
@@ -57,7 +75,7 @@ function Home() {
                       </li>
                     </ul>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
         </div>

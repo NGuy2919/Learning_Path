@@ -1,13 +1,19 @@
 .content-about{
     background: linear-gradient(to top, #ead6ff, #deeafe);
-    padding: 20px 0
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
 }
 .content-about h3{
     text-align: center;
     margin: 10px 0;
 }
 .title-about{
-    padding: 20px 0;
+    font-size: 25px;
+    position: relative;
 }
 .members{
     display: flex;
@@ -20,8 +26,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
-    width: 520px;
+    width: 700px;
     height: 300px;
     overflow: hidden;
     border-radius: 20px;
@@ -39,4 +46,10 @@
 }
 .detail-member{
     display: none;
+}
+.detail-opinion{
+    width: 450px;
+}
+.opinion-member{
+    width: 400px;
 }

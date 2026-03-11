@@ -1,12 +1,14 @@
 import "./Login_Register.css";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 function Login() {
 
-  const [username,setUsername] = useState("")
+  const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const navigate = useNavigate()
+
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -18,7 +20,7 @@ function Login() {
           "Content-Type":"application/json"
         },
         body:JSON.stringify({
-          username,
+          email,
           password
         })
       })
@@ -28,8 +30,10 @@ function Login() {
       if(data.success){
         alert("Login success")
 
-        // เก็บ token
-        localStorage.setItem("token",data.token)
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
+
+        navigate("/")   // redirect
 
       }else{
         alert(data.message)
@@ -47,12 +51,12 @@ function Login() {
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <div className="input-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           </div>
           <div className="input-group">

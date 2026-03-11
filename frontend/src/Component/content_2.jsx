@@ -1,5 +1,6 @@
 import "./content_2.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function content_2() {
   const [courses, setCourses] = useState([]);
@@ -17,8 +18,8 @@ function content_2() {
     <div className="content-2">
       <h3 className="title">Course Recommendation</h3>
             <div className="cards">
-              {courses.map((course) => (
-                <div className="card" key={course.id}>
+              {courses.slice(0, 4).map((course) => (
+                <Link to={`/course/${course.id}`} className="card" key={course.id}>
                   <div
                     className="image-card"
                     style={{
@@ -33,14 +34,14 @@ function content_2() {
 
                     <ul className="ul-card">
                       <li>
-                        <p className="card-show">
+                        <div className="card-show">
                           <p>
                           Categories : {course.category}
                           </p>
                           <p>
                           Price : {course.price === 0 ? "Free" : `${course.price} Baht`}
                           </p>
-                        </p>
+                        </div>
 
                         <div className="card-hidden">
                           <p>Level : {course.level}</p>
@@ -49,12 +50,12 @@ function content_2() {
                       </li>
                     </ul>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
-      <button className="btn-more-card"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffffff"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
+      <Link to="/course" className="btn-more-card"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffffff"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
       <p>View More</p>
-      </button>
+      </Link>
     </div>
   );
 }
