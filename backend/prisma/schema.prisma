@@ -14,6 +14,7 @@ model User {
   password  String
   role      Role
   interests String[]
+
   fname     String?
   lname     String?
   birthDate DateTime?
@@ -40,6 +41,7 @@ model Course {
 
   targetGroup  String?
   organization String?
+  university   String?
   price        Float?
 
   category Category
