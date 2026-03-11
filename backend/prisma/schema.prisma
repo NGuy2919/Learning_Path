@@ -35,8 +35,6 @@ model Course {
 
   courseName        String
   courseDescription String
-  
-  totalDurationMin Int?
 
   targetGroup  String?
   organization String?
@@ -61,6 +59,8 @@ model Course {
   interactions UserInteraction[]
 
   slug String @unique @db.VarChar(255)
+
+  @@index([categoryId])
 }
 
 model Category {
@@ -86,16 +86,6 @@ model Instructor {
   lessons Lesson[]
 }
 
-model CourseInstructor {
-  courseId String
-  instructorId String
-
-  course Course @relation(fields: [courseId], references: [id])
-  instructor Instructor @relation(fields: [instructorId], references: [id])
-
-  @@id([courseId, instructorId])
-}
-
 // ------ เก็บส่วนสำคัญของเนื้อหาภายในคอร์สไว้สำหรับ search, recommendations ------
 model CourseKeyword {
   id       String @id @default(uuid())
@@ -113,6 +103,7 @@ model Module {
   courseId   String
   moduleName String
   moduleDescription String?
+  durationMin Int
   orderIndex Int
 
   course  Course   @relation(fields: [courseId], references: [id])
@@ -128,7 +119,7 @@ model Lesson {
   topicNo     String?
   topicName   String
   videoUrl    String?
-  durationMin Int
+  
   module      Module  @relation(fields: [moduleId], references: [id])
 
   instructorId String?
@@ -258,7 +249,7 @@ model Certificate {
 model CourseEmbedding {
   id        String  @id @default(uuid())
   courseId  String  @unique
-  embedding Vector(1536)
+  embedding Unsupported("vector")
 
   course Course @relation(fields: [courseId], references: [id])
 
@@ -277,7 +268,6 @@ model UserInteraction {
 
   @@index([userId])
   @@index([courseId])
-  @@index([keyword])
 }
 
 enum InteractionType {
@@ -296,4 +286,5 @@ model UserInterest {
   user User @relation(fields: [userId], references: [id])
 
   @@id([userId, keyword])
+  @@index([keyword])
 }
