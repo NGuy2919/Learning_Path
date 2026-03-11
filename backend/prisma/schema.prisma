@@ -35,6 +35,8 @@ model Course {
 
   courseName        String
   courseDescription String
+  
+  totalDurationMin Int?
 
   targetGroup  String?
   organization String?
@@ -110,6 +112,7 @@ model Module {
   id         String @id @default(uuid())
   courseId   String
   moduleName String
+  moduleDescription String?
   orderIndex Int
 
   course  Course   @relation(fields: [courseId], references: [id])
