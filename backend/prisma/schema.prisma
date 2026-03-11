@@ -37,6 +37,7 @@ enum Role {
 model Course {
   id                String            @id @default(uuid())
   courseName        String
+  courseNameEn      String
   courseDescription String
 
   targetGroup  String?
