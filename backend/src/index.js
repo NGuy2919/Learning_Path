@@ -1,9 +1,13 @@
+import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import courseRoutes from "./routes/courseRoutes.js"
 import recommendationRoutes from "./routes/recommendationRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+
+// Load environment variables from .env
+dotenv.config()
 
 const app = express()
 

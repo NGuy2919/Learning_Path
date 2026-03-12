@@ -12,11 +12,18 @@ function Home() {
 
   useEffect(() => {
     fetch("http://localhost:3000/api/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data.data); // data จาก backend
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || "Failed to fetch courses");
+        return data;
       })
-      .catch((err) => console.error(err));
+      .then((data) => {
+        setCourses(Array.isArray(data?.data) ? data.data : []); // data จาก backend
+      })
+      .catch((err) => {
+        console.error("Failed to load courses:", err);
+        setCourses([]);
+      });
   }, []);
 
   useEffect(() => {
@@ -28,11 +35,15 @@ function Home() {
         Authorization: `Bearer ${token}`
       }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setUser(data.user)
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || "Failed to fetch profile");
+        return data;
       })
-      .catch((err) => console.error(err))
+      .then((data) => {
+        if (data.success && data.user) setUser(data.user)
+      })
+      .catch((err) => console.error("Failed to load profile:", err))
   }, [])
   
   return (

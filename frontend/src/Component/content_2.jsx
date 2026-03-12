@@ -7,11 +7,18 @@ function content_2() {
   
     useEffect(() => {
     fetch("http://localhost:3000/api/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data.data); // data จาก backend
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || "Failed to fetch courses");
+        return data;
       })
-      .catch((err) => console.error(err));
+      .then((data) => {
+        setCourses(Array.isArray(data?.data) ? data.data : []); // data จาก backend
+      })
+      .catch((err) => {
+        console.error("Failed to load courses:", err);
+        setCourses([]);
+      });
     }, []);
     
   return (

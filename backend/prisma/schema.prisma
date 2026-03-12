@@ -7,128 +7,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum EducationLevel {
-  SECONDARY
-  HIGH_SCHOOL
-  DIPLOMA
-  BACHELOR
-  MASTER
-  DOCTORATE
-  OTHER
-}
-
 model User {
-  id        String   @id @default(uuid())
-  username  String
-  email     String   @unique
-  password  String
-  role      Role
-  interests String[]
-  fname     String?
-  lname     String?
-  birthDate DateTime?
-  educationLevel EducationLevel?
-
-  createdAt DateTime @default(now())
-
+  id              String              @id @default(uuid())
+  username        String
+  email           String              @unique
+  password        String
+  role            Role
+  createdAt       DateTime            @default(now())
+  birthDate       DateTime?
+  educationLevel  EducationLevel?
+  fname           String?
+  lname           String?
+  certificates    Certificate[]
   enrollments     Enrollment[]
   feedbacks       Feedback[]
-  certificates    Certificate[]
   recommendations RecommendationLog[]
-
-  interactions UserInteraction[]
-}
-
-enum Role {
-  admin
-  student
+  interactions    UserInteraction[]
+  UserInterest    UserInterest[]
 }
 
 model Course {
-  id String @id @default(uuid())
-
+  id                String            @id @default(uuid())
   courseName        String
   courseDescription String
+  targetGroup       String?
+  organization      String?
+  price             Float?
+  level             Level
+  thumbnailUrl      String?
+  createdAt         DateTime          @default(now())
+  categoryId        String
+  slug              String            @unique @db.VarChar(255)
+  university        String?
+  courseNameEn      String
+  certificates      Certificate[]
+  Category          Category          @relation(fields: [categoryId], references: [id])
+  embedding         CourseEmbedding?
+  keywords          CourseKeyword[]
+  enrollments       Enrollment[]
+  feedbacks         Feedback[]
+  modules           Module[]
+  interactions      UserInteraction[]
 
-  targetGroup  String?
-  organization String?
-  price        Float?
-
-  category Category
-  level    Level
-
-  thumbnailUrl String?
-
-  embedding CourseEmbedding?
-
-  createdAt DateTime @default(now())
-
-  modules      Module[]
-  keywords     CourseKeyword[]
-  enrollments  Enrollment[]
-  feedbacks    Feedback[]
-  certificates Certificate[]
-  interactions UserInteraction[]
-}
-
-// ----------------- เปลี่ยนแปลงภายหลัง เดต้ายังไม่stable ----------------
-enum Category {
-  pharmacy
-  ai
-  data
-  programming
-}
-
-enum Level {
-  beginner
-  intermediate
-  advanced
+  @@index([categoryId])
 }
 
 model Instructor {
-  id   String @id @default(uuid())
-  name String
-
-  lessons Lesson[]
+  id           String   @id @default(uuid())
+  name         String
+  organization String?
+  title        String?
+  lessons      Lesson[]
 }
 
-// ------ เก็บส่วนสำคัญของเนื้อหาภายในคอร์สไว้สำหรับ search, recommendations ------
 model CourseKeyword {
   id       String @id @default(uuid())
   courseId String
   keyword  String
-
-  course Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
 
   @@unique([courseId, keyword])
   @@index([courseId])
 }
 
 model Module {
-  id         String @id @default(uuid())
-  courseId   String
-  moduleName String
-  orderIndex Int
-
-  course  Course   @relation(fields: [courseId], references: [id])
-  lessons Lesson[]
+  id                String   @id @default(uuid())
+  courseId          String
+  moduleName        String
+  orderIndex        Int
+  durationMin       Int
+  moduleDescription String?
+  lessons           Lesson[]
+  course            Course   @relation(fields: [courseId], references: [id])
 
   @@index([courseId])
 }
 
 model Lesson {
-  id       String @id @default(uuid())
-  moduleId String
-
-  topicNo     String?
-  topicName   String
-  videoUrl    String?
-  durationMin Int
-  module      Module  @relation(fields: [moduleId], references: [id])
-
+  id           String              @id @default(uuid())
+  moduleId     String
+  topicNo      String?
+  topicName    String
+  videoUrl     String?
   instructorId String?
-  instructor   Instructor? @relation(fields: [instructorId], references: [id])
-
+  instructor   Instructor?         @relation(fields: [instructorId], references: [id])
+  module       Module              @relation(fields: [moduleId], references: [id])
   performances LessonPerformance[]
   tests        Test[]
 
@@ -136,33 +99,21 @@ model Lesson {
 }
 
 model Enrollment {
-  id String @id @default(uuid())
-
-  userId   String
-  courseId String
-
-  status   EnrollmentStatus
-  progress Float
-
-  finalScore Float?
-
-  enrolledDate DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
-
+  id           String              @id @default(uuid())
+  userId       String
+  courseId     String
+  status       EnrollmentStatus
+  progress     Float               @default(0)
+  finalScore   Float?
+  enrolledDate DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  course       Course              @relation(fields: [courseId], references: [id])
+  user         User                @relation(fields: [userId], references: [id])
   performances LessonPerformance[]
 
   @@unique([userId, courseId])
   @@index([userId])
   @@index([courseId])
-}
-
-enum EnrollmentStatus {
-  not_started
-  in_progress
-  completed
 }
 
 model LessonPerformance {
@@ -172,56 +123,39 @@ model LessonPerformance {
   quizScore    Float?
   timeSpentMin Float?
   lessonStatus LessonStatus
-
-  updatedAt DateTime @updatedAt
-
-  enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
-  lesson     Lesson     @relation(fields: [lessonId], references: [id])
+  updatedAt    DateTime     @updatedAt
+  enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id])
+  lesson       Lesson       @relation(fields: [lessonId], references: [id])
 
   @@unique([enrollmentId, lessonId])
   @@index([lessonId])
 }
 
-enum LessonStatus {
-  not_started
-  in_progress
-  completed
-}
-
 model Feedback {
-  id       String @id @default(uuid())
-  userId   String
-  courseId String
-
-  // ไม่ได้ fixed rating 1-5
-  rating  Int
-  comment String?
-
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  rating    Int
+  comment   String?
   createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, courseId])
   @@index([courseId])
 }
 
-// ------ Test lesson ------ 
 model Test {
-  id       String @id @default(uuid())
-  lessonId String
-
-  question String
-
-  optionA String
-  optionB String
-  optionC String
-  optionD String
-
+  id            String @id @default(uuid())
+  lessonId      String
+  question      String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
   correctAnswer String
   score         Int
-
-  lesson Lesson @relation(fields: [lessonId], references: [id])
+  lesson        Lesson @relation(fields: [lessonId], references: [id])
 
   @@index([lessonId])
 }
@@ -232,8 +166,7 @@ model RecommendationLog {
   algorithm          String
   generatedAt        DateTime @default(now())
   recommendedCourses Json
-
-  user User @relation(fields: [userId], references: [id])
+  user               User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -245,31 +178,110 @@ model Certificate {
   courseId       String
   issueDate      DateTime
   certificateUrl String
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  course         Course   @relation(fields: [courseId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
 }
 
 model CourseEmbedding {
-  id        String  @id @default(uuid())
-  courseId  String  @unique
-  embedding Float[]
-
-  course Course @relation(fields: [courseId], references: [id])
+  id        String                @id @default(uuid())
+  courseId  String                @unique
+  embedding Unsupported("vector")
+  course    Course                @relation(fields: [courseId], references: [id])
 
   @@index([courseId])
 }
 
 model UserInteraction {
-  id        String   @id @default(uuid())
+  id        String          @id @default(uuid())
   userId    String
   courseId  String
-  action    String
-  createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  createdAt DateTime        @default(now())
+  action    InteractionType
+  course    Course          @relation(fields: [courseId], references: [id])
+  user      User            @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([courseId])
+}
+
+model Category {
+  id     String   @id
+  name   String   @unique
+  Course Course[]
+}
+
+model UserInterest {
+  userId  String
+  keyword String
+  User    User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, keyword])
+  @@index([keyword])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model course_import {
+  course_id          String?
+  course_name_th     String?
+  course_name_en     String?
+  module_desc        String?
+  module_no          String?
+  module_name        String?
+  lesson_no          String?
+  lesson_name        String?
+  instructor         String?
+  duration_min       String?
+  media_type         String?
+  target_group       String?
+  module_price       String?
+  grad_req           String?
+  organization       String?
+  objective          String?
+  category           String?
+  target_group_clean String?
+  university         String?
+
+  @@ignore
+}
+
+enum EducationLevel {
+  SECONDARY
+  HIGH_SCHOOL
+  DIPLOMA
+  BACHELOR
+  MASTER
+  DOCTORATE
+  OTHER
+}
+
+enum Role {
+  admin
+  student
+}
+
+enum Level {
+  beginner
+  intermediate
+  advanced
+}
+
+enum EnrollmentStatus {
+  not_started
+  in_progress
+  completed
+}
+
+enum LessonStatus {
+  not_started
+  in_progress
+  completed
+}
+
+enum InteractionType {
+  view
+  click
+  enroll
+  complete
+  like
+  search
 }
