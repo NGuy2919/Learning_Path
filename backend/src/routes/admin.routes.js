@@ -9,12 +9,29 @@ import {
 
 const router = express.Router()
 
-router.get("/dashboard", verifyToken, verifyAdmin, getDashboard)
+router.get("/dashboard", 
+    verifyToken, 
+    verifyAdmin, 
+    getDashboard)
 
-router.get("/users", verifyToken, verifyAdmin, getAllUsers)
+router.get(
+    "/users", 
+    verifyToken, 
+    verifyAdmin, 
+    getAllUsers)
 
-router.put("/users/:id/role", verifyToken, verifyAdmin, updateUserRole)
+router.put(
+    "/users/:id/role", 
+    verifyToken, 
+    verifyAdmin, 
+    updateUserRole)
 
-router.delete("/users/:id", verifyToken, verifyAdmin, deleteUser)
+router.delete(
+    "/users/:id", 
+    verifyToken, 
+    verifyAdmin, 
+    deleteUser)
 
 export default router
+
+

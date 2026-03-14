@@ -1,15 +1,7 @@
-import express from "express"
-import courseRoutes from "./routes/courses.routes.js"
-import adminRoutes from "./routes/admin.routes.js"
+import app from "./src/index.js"
 
-const app = express()
+const PORT = 3000
 
-app.use(express.json())
-
-app.use("/api/courses", courseRoutes)
-
-app.use("/api/admin", adminRoutes)
-
-app.listen(3000, () => {
-  console.log("Server running")
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
