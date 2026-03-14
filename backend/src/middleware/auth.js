@@ -33,7 +33,7 @@ export const verifyToken = (req, res, next) => {
 // check admin role
 export const verifyAdmin = (req, res, next) => {
 
-  if (req.user.role !== "ADMIN") {
+  if (req.user.role !== "admin") {
     return res.status(403).json({
       message: "Admin only"
     })
