@@ -1,42 +1,43 @@
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
-
-export const getDashboard = async (req, res) => {
-
-  const users = await prisma.user.count()
-  const courses = await prisma.course.count()
-
-  res.json({
-    totalUsers: users,
-    totalCourses: courses
-  })
-
-}
-
 import prisma from "../lib/prisma.js"
 
-export const getAllUsers = async (req, res) => {
+export const getDashboardStats = async (req, res) => {
+  try {
 
+    const users = await prisma.user.count()
+    const courses = await prisma.course.count()
+    const enrollments = await prisma.enrollment.count()
+
+    res.json({
+      users,
+      courses,
+      enrollments
+    })
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch stats" })
+  }
+}
+
+
+export const getAllUsers = async (req, res) => {
   try {
 
     const users = await prisma.user.findMany({
       select: {
         id: true,
         email: true,
-        role: true
+        role: true,
+        createdAt: true
       }
     })
 
     res.json(users)
 
   } catch (error) {
-
-    res.status(500).json({ message: "Server error" })
-
+    res.status(500).json({ error: "Failed to fetch users" })
   }
-
 }
+
 
 export const deleteUser = async (req, res) => {
 
@@ -48,28 +49,43 @@ export const deleteUser = async (req, res) => {
       where: { id }
     })
 
-    res.json({
-      message: "User deleted"
-    })
+    res.json({ message: "User deleted" })
 
   } catch (error) {
+    res.status(500).json({ error: "Failed to delete user" })
+  }
+}
 
-    res.status(500).json({ message: "Server error" })
 
+export const getAllCourses = async (req, res) => {
+
+  try {
+
+    const courses = await prisma.course.findMany()
+
+    res.json(courses)
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch courses" })
   }
 
 }
 
-export const updateUserRole = async (req, res) => {
+
+export const deleteCourse = async (req, res) => {
 
   const { id } = req.params
-  const { role } = req.body
 
-  const user = await prisma.user.update({
-    where: { id },
-    data: { role }
-  })
+  try {
 
-  res.json(user)
+    await prisma.course.delete({
+      where: { id }
+    })
+
+    res.json({ message: "Course deleted" })
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete course" })
+  }
 
 }

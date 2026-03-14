@@ -1,37 +1,20 @@
 import express from "express"
 import { verifyToken, verifyAdmin } from "../middleware/auth.js"
+
 import {
-  getDashboard,
+  getDashboardStats,
   getAllUsers,
-  updateUserRole,
-  deleteUser
+  deleteUser,
+  getAllCourses,
+  deleteCourse
 } from "../controllers/admin.controller.js"
 
 const router = express.Router()
 
-router.get("/dashboard", 
-    verifyToken, 
-    verifyAdmin, 
-    getDashboard)
-
-router.get(
-    "/users", 
-    verifyToken, 
-    verifyAdmin, 
-    getAllUsers)
-
-router.put(
-    "/users/:id/role", 
-    verifyToken, 
-    verifyAdmin, 
-    updateUserRole)
-
-router.delete(
-    "/users/:id", 
-    verifyToken, 
-    verifyAdmin, 
-    deleteUser)
+router.get("/stats", verifyToken, verifyAdmin, getDashboardStats)
+router.get("/users", verifyToken, verifyAdmin, getAllUsers)
+router.delete("/users/:id", verifyToken, verifyAdmin, deleteUser)
+router.get("/courses", verifyToken, verifyAdmin, getAllCourses)
+router.delete("/courses/:id", verifyToken, verifyAdmin, deleteCourse)
 
 export default router
-
-

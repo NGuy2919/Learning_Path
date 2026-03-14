@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link ,useNavigate} from "react-router-dom"
-import logo from "../assets/logo.png"
+import logo from "../../assets/logo.png"
 import "./Login_Register.css"
 
 function Register(){

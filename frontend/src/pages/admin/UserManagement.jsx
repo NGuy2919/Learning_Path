@@ -25,18 +25,20 @@ function UserManagement() {
 
     <div>
 
-      <h2>User Management</h2>
+      <h1>User Management</h1>
 
       {users.map(user => (
+
         <div key={user.id}>
 
-          {user.email}
+          {user.email} ({user.role})
 
           <button onClick={() => handleDelete(user.id)}>
             Delete
           </button>
 
         </div>
+
       ))}
 
     </div>

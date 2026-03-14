@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./Page/Home";
-import AboutUs from "./Page/AboutUs";
-import Login from "./Page/Login";
-import Profile from "./Page/Profile";
-import Register from "./Page/Register";
-import Course from "./Page/Course";
-import CourseDetail from "./Page/CourseDetail";
+import Home from "./Pages/Home";
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import Login from "./Pages/LoginRegister/Login";
+import Profile from "./Pages/Profile/Profile";
+import Register from "./Pages/LoginRegister/Register";
+import Course from "./Pages/Course/Course";
+import CourseDetail from "./Pages/CourseDetail/CourseDetail";
 
 function App() {
 
