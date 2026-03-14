@@ -1,12 +1,9 @@
-export async function getCourses() {
-  const res = await fetch("http://localhost:3000/api/courses")
-  return res.json()
+import api from "./api"
+
+export const getCourses = () => {
+  return api.get("/courses")
 }
 
-export async function getCourseById(id) {
-  const res = await fetch(`http://localhost:3000/api/courses/${id}`)
-  if (!res.ok) {
-    throw new Error("Failed to fetch course");
-  }
-  return res.json()
+export const getCourse = (id) => {
+  return api.get(`/courses/${id}`)
 }

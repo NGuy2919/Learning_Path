@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCourseById } from "../api/courseApi";
+import { getCourseById } from "../../api/courseApi";
 import Navbar from "../Component/Navbar";
 import "./CourseDetail.css";
 
