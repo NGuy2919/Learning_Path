@@ -1,7 +1,7 @@
 import imgRating from "../assets/content-rating.png"
-import "./rating.css"
+import "./Rating.css"
 
-function rating() {
+function Rating() {
   return (
     <div className="content-rating">
         <img src={imgRating} alt="" width={500} height={350}/>
@@ -25,4 +25,4 @@ function rating() {
     </div>
   )
 }
-export default rating
+export default Rating

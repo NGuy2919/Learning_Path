@@ -1,8 +1,8 @@
-import "./content_2.css";
+import "./Content_2.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function content_2() {
+function Content_2() {
   const [courses, setCourses] = useState([]);
   
     useEffect(() => {
@@ -72,4 +72,4 @@ function content_2() {
     </div>
   );
 }
-export default content_2;
+export default Content_2;
