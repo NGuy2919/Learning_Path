@@ -25,7 +25,7 @@ function content_2() {
     <div className="content-2">
       <h3 className="title">Course Recommendation</h3>
             <div className="cards">
-              {courses.slice(0, 4).map((course) => (
+              {courses.slice(0,4).map((course) => (
                 <Link to={`/course/${course.id}`} className="card" key={course.id}>
                   <div
                     className="image-card"
@@ -37,22 +37,28 @@ function content_2() {
                   ></div>
 
                   <div className="content-card">
-                    <h4>{course.courseName}</h4>
+                    <h4 className="course-title">{course.courseName}</h4>
 
                     <ul className="ul-card">
                       <li>
                         <div className="card-show">
-                          <p>
-                          Categories : {course.category}
+                          <p className="rating">
+                            ⭐ {course.averageRating ?? "-"} ({course.totalReviews ?? 0} reviews)
                           </p>
-                          <p>
-                          Price : {course.price === 0 ? "Free" : `${course.price} Baht`}
+                          <p className="text">
+                          Categories : {course.category?.name}
+                          </p>
+                          <p className="text">
+                          Price : {course.price === null ? "Free" : `${course.price} Baht`}
                           </p>
                         </div>
 
                         <div className="card-hidden">
                           <p>Level : {course.level}</p>
-                          <p>Organization : {course.organization}</p>
+                          {course.organization &&
+                            <p>Organization : {course.organization}</p>
+                          }
+                          <p>University : {course.university}</p>
                         </div>
                       </li>
                     </ul>
