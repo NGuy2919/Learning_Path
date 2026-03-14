@@ -16,28 +16,42 @@ function Dashboard() {
   if (!stats) return <div>Loading...</div>
 
   return (
+
     <div>
 
-      <h1>Admin Dashboard</h1>
+      <h1>Dashboard</h1>
 
-      <div>
-        <h3>Total Users</h3>
-        <p>{stats.users}</p>
-      </div>
+      <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
 
-      <div>
-        <h3>Total Courses</h3>
-        <p>{stats.courses}</p>
-      </div>
+        <div style={card}>
+          <h3>Users</h3>
+          <h2>{stats.users}</h2>
+        </div>
 
-      <div>
-        <h3>Total Enrollments</h3>
-        <p>{stats.enrollments}</p>
+        <div style={card}>
+          <h3>Courses</h3>
+          <h2>{stats.courses}</h2>
+        </div>
+
+        <div style={card}>
+          <h3>Enrollments</h3>
+          <h2>{stats.enrollments}</h2>
+        </div>
+
       </div>
 
     </div>
+
   )
 
+}
+
+const card = {
+  background: "white",
+  padding: "20px",
+  borderRadius: "10px",
+  width: "200px",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
 }
 
 export default Dashboard

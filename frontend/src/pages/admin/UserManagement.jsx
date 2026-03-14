@@ -27,19 +27,42 @@ function UserManagement() {
 
       <h1>User Management</h1>
 
-      {users.map(user => (
+      <table border="1" cellPadding="10">
 
-        <div key={user.id}>
+        <thead>
 
-          {user.email} ({user.role})
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
 
-          <button onClick={() => handleDelete(user.id)}>
-            Delete
-          </button>
+        </thead>
 
-        </div>
+        <tbody>
 
-      ))}
+          {users.map(user => (
+
+            <tr key={user.id}>
+
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+
+              <td>
+
+                <button onClick={() => handleDelete(user.id)}>
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
 
     </div>
 

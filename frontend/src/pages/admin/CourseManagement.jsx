@@ -27,19 +27,40 @@ function CourseManagement() {
 
       <h1>Course Management</h1>
 
-      {courses.map(course => (
+      <table border="1" cellPadding="10">
 
-        <div key={course.id}>
+        <thead>
 
-          {course.title}
+          <tr>
+            <th>Title</th>
+            <th>Action</th>
+          </tr>
 
-          <button onClick={() => handleDelete(course.id)}>
-            Delete
-          </button>
+        </thead>
 
-        </div>
+        <tbody>
 
-      ))}
+          {courses.map(course => (
+
+            <tr key={course.id}>
+
+              <td>{course.title}</td>
+
+              <td>
+
+                <button onClick={() => handleDelete(course.id)}>
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
 
     </div>
 
