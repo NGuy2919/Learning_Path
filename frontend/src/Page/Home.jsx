@@ -11,7 +11,7 @@ function Home() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/courses")
+    fetch("http://localhost:3000/api/courses/popular")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data?.message || "Failed to fetch courses");
@@ -54,7 +54,7 @@ function Home() {
           <h3 className="title">Popular Course</h3>
           
             <div className="cards">
-              {courses.slice(0, 3).map((course) => (
+              {courses.map((course) => (
                 <Link to={`/course/${course.id}`} className="card" key={course.id}>
                   <div
                     className="image-card"
@@ -66,22 +66,28 @@ function Home() {
                   ></div>
 
                   <div className="content-card">
-                    <h4>{course.courseName}</h4>
+                    <h4 className="course-title">{course.courseName}</h4>
 
                     <ul className="ul-card">
                       <li>
-                        <p className="card-show">
-                          <p>
-                          Categories : {course.category}
+                        <div className="card-show">
+                          <p className="rating">
+                            ⭐ {course.averageRating} ({course.totalReviews} reviews)
                           </p>
-                          <p>
-                          Price : {course.price === 0 ? "Free" : `${course.price} Baht`}
+                          <p className="text">
+                          Categories : {course.category.name}
                           </p>
-                        </p>
+                          <p className="text">
+                          Price : {course.price === null ? "Free" : `${course.price} Baht`}
+                          </p>
+                        </div>
 
                         <div className="card-hidden">
                           <p>Level : {course.level}</p>
-                          <p>Organization : {course.organization}</p>
+                          {course.organization &&
+                            <p>Organization : {course.organization}</p>
+                          }
+                          <p>University : {course.university}</p>
                         </div>
                       </li>
                     </ul>
