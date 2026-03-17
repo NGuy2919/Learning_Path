@@ -5,6 +5,7 @@ import courseRoutes from "./routes/courseRoutes.js"
 import recommendationRoutes from "./routes/recommendationRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import enrollmentRoutes from "./routes/enrollmentRoutes.js"
 
 // Load environment variables from .env
 dotenv.config()
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/courses", courseRoutes)
 app.use("/api/recommendations", recommendationRoutes)
 app.use("/api/user", userRoutes)
+app.use("/api/enrollments", enrollmentRoutes)
 
 app.listen(3000, () => {
   console.log("Server running on port 3000")
