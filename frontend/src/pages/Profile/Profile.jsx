@@ -1,4 +1,4 @@
-import NavBar from "../Component/Navbar.jsx"
+import Navbar from "../../components/Navbar.jsx"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -38,7 +38,7 @@ function Profile() {
 
   return (
     <div>
-      <NavBar />
+      <Navbar />
       <div className="profile-page">
         <h1>Profile</h1>
 

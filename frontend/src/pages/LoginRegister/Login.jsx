@@ -1,5 +1,5 @@
 import "./Login_Register.css";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { Link ,useNavigate} from "react-router-dom";
 
@@ -28,14 +28,17 @@ function Login() {
       const data = await res.json()
 
       if(data.success){
-        alert("Login success")
+      alert("Login success")
 
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
 
-        navigate("/")   // redirect
-
+      if(data.user.role === "admin"){
+        navigate("/admin/dashboard")
       }else{
+        navigate("/")
+      }
+    }else{
         alert(data.message)
       }
 

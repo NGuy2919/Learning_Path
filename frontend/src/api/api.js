@@ -1,6 +1,17 @@
-const API = import.meta.env.VITE_API_URL
+import axios from "axios"
+// import { api } from "./api"
 
-export async function getHealth() {
-  const res = await fetch(`${API}/api/health`)
-  return res.json()
-}
+const api = axios.create({
+  baseURL: "http://localhost:3000/api"
+})
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token")
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+export default api
+

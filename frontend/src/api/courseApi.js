@@ -1,12 +1,16 @@
-export async function getCourses() {
-  const res = await fetch("http://localhost:3000/api/courses")
-  return res.json()
+import api from "./api"
+
+// ดึง course ทั้งหมด
+export const getCourses = () => {
+  return api.get("/courses")
 }
 
-export async function getCourseById(id) {
-  const res = await fetch(`http://localhost:3000/api/courses/${id}`)
-  if (!res.ok) {
-    throw new Error("Failed to fetch course");
-  }
-  return res.json()
+// ดึง course ตาม id
+export const getCourseById = (id) => {
+  return api.get(`/courses/${id}`)
+}
+
+// popular courses
+export const getPopularCourses = () => {
+  return api.get("/courses/popular")
 }

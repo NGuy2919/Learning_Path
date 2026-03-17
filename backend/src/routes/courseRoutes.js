@@ -4,7 +4,10 @@ import { getAllCourses, getCourseById, getCoursesWithRating } from "../controlle
 const router = express.Router()
 
 router.get("/", getAllCourses);
-router.get("/popular",getCoursesWithRating)
+router.get("/popular", getCoursesWithRating)
 router.get("/:id", getCourseById);
 
 export default router
+
+
+

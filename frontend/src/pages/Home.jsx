@@ -1,12 +1,17 @@
-import "./content_2.css";
-import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar.jsx"
+import Footer from "../components/Footer.jsx"
+import Content_1 from "../components/Content_1.jsx";
+import Content_2 from "../components/Content_2.jsx";
+import Rating from "../components/Rating.jsx";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function content_2() {
+function Home() {
   const [courses, setCourses] = useState([]);
-  
-    useEffect(() => {
-    fetch("http://localhost:3000/api/courses")
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/courses/popular")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data?.message || "Failed to fetch courses");
@@ -19,13 +24,37 @@ function content_2() {
         console.error("Failed to load courses:", err);
         setCourses([]);
       });
-    }, []);
-    
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) return
+
+    fetch("http://localhost:3000/api/user/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || "Failed to fetch profile");
+        return data;
+      })
+      .then((data) => {
+        if (data.success && data.user) setUser(data.user)
+      })
+      .catch((err) => console.error("Failed to load profile:", err))
+  }, [])
+  
   return (
-    <div className="content-2">
-      <h3 className="title">Course Recommendation</h3>
+    <div>
+        <Navbar />
+        <Content_1 />
+        <div className="content-3">
+          <h3 className="title">Popular Course</h3>
+          
             <div className="cards">
-              {courses.slice(0,4).map((course) => (
+              {courses.map((course) => (
                 <Link to={`/course/${course.id}`} className="card" key={course.id}>
                   <div
                     className="image-card"
@@ -43,10 +72,10 @@ function content_2() {
                       <li>
                         <div className="card-show">
                           <p className="rating">
-                            ⭐ {course.averageRating ?? "-"} ({course.totalReviews ?? 0} reviews)
+                            ⭐ {course.averageRating} ({course.totalReviews} reviews)
                           </p>
                           <p className="text">
-                          Categories : {course.category?.name}
+                          Categories : {course.category.name}
                           </p>
                           <p className="text">
                           Price : {course.price === null ? "Free" : `${course.price} Baht`}
@@ -66,10 +95,11 @@ function content_2() {
                 </Link>
               ))}
             </div>
-      <Link to="/course" className="btn-more-card"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffffff"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
-      <p>View More</p>
-      </Link>
+        </div>
+        <Content_2 />
+        <Rating />
+        <Footer />
     </div>
-  );
+  )
 }
-export default content_2;
+export default Home
