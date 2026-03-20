@@ -30,8 +30,14 @@ DATABASE_URL="your_database_url"
 npx prisma generate
 ```
 
-### 4. Sync database
+### 4. Migrate database
 
 ```bash
-npx prisma db push
+npx prisma migrate dev --name init
+```
+
+### 5. Install Requirement for Model
+
+```bash
+pip install -r requirement.txt 
 ```

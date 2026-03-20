@@ -27,6 +27,9 @@ dist-ssr
 *.sln
 *.sw?
 
+.venv/
+.venv/*
+.venv.*
+
 clean_courses.csv
-model_artifacts/recommendation_model.pkl
 __pycache__
