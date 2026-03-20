@@ -35,3 +35,9 @@ npx prisma generate
 ```bash
 npx prisma db push
 ```
+
+### 5. Install requirement 
+
+```bash
+pip install -r requirement.txt 
+```
