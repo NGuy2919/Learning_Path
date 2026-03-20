@@ -33,7 +33,7 @@ npx prisma generate
 ### 4. Sync database
 
 ```bash
-npx prisma db push
+npx prisma migrate dev --name init
 ```
 
 ### 5. Install Requirement for Model
