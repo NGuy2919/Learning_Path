@@ -92,6 +92,7 @@ function Profile() {
 
         <div className="my-courses-section">
           <h2>My Enrolled Courses 📚</h2>
+          <hr className="hr"/>
           {loadingCourses && <p>Loading courses...</p>}
           {errorCourses && <p style={{ color: "red" }}>{errorCourses}</p>}
 
@@ -99,8 +100,8 @@ function Profile() {
             <p>You haven't enrolled in any courses yet. <Link to="/courses">Browse courses</Link></p>
             )}
           
-          {!loadingCourses && !errorCourses && courses.length > 0 && (
-            <div className="courses-grid">
+          {courses.length > 0 && (
+            <div className="cards">
               {courses.map((enrollment) => (
                 <Link 
                   to={`/course/${enrollment.course.id}`} 
@@ -108,25 +109,42 @@ function Profile() {
                   className="course-card"
                   style={{ textDecoration: 'none', color: 'inherit' }} // 💡 ป้องกัน Link เปลี่ยนสีข้อความและขีดเส้นใต้
                 >
+                  <div
+                    className="image-card"
+                    style={{
+                      backgroundImage: `url(${enrollment.course.thumbnailUrl})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
+                  ></div>
 
-              <div key={enrollment.id} className="course-card">
-                <img 
-                  src={enrollment.course.thumbnailUrl || "https://res.cloudinary.com/dygjtp2be/image/upload/v1774030276/%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%A0%E0%B8%B2%E0%B8%9E_cga0pm.jpg"} 
-                  alt={enrollment.course.courseName} 
-                  className="img-profile-course"
-                  onError={(e) => {
-                    e.target.src = "https://res.cloudinary.com/dygjtp2be/image/upload/v1774030276/%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%A0%E0%B8%B2%E0%B8%9E_cga0pm.jpg";
-                  }}
-                  />
-                <h3>{enrollment.course.courseName}</h3>
-                <p>
-                  Status: 
-                  
-                  <span className="status-badge">
-                    {enrollment.status}
-                  </span>
-                </p>
-              </div>
+                  <div className="content-card">
+                    <h4 className="course-title">{enrollment.course.courseName}</h4>
+
+                    <ul className="ul-card">
+                      <li>
+                        <div className="card-show">
+                          <p className="rating">
+                            ⭐ {enrollment.course.averageRating ?? "-"} ({enrollment.course.totalReviews ?? 0} reviews)
+                          </p>
+                          <p className="text">
+                          Categories : {enrollment.course.category?.name}
+                          </p>
+                          <p className="text">
+                          Price : {enrollment.course.price === null ? "Free" : `${enrollment.course.price} Baht`}
+                          </p>
+                        </div>
+
+                        <div className="card-hidden">
+                          <p>Level : {enrollment.course.level}</p>
+                          {enrollment.course.organization &&
+                            <p>Organization : {enrollment.course.organization}</p>
+                          }
+                          <p>University : {enrollment.course.university}</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
               </Link>
             ))}
             </div>
