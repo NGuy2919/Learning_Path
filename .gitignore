@@ -29,4 +29,3 @@ dist-ssr
 
 clean_courses.csv
 model_artifacts/recommendation_model.pkl
-__pycache__
